@@ -1,0 +1,36 @@
+version: "2.4"
+
+services:
+  freeipa:
+    image: freeipa/freeipa-server
+    hostname: ${UDATA_LDAP_HOSTNAME:-localhost}
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - ${PWD}/config/ipa-server-install-options:/data/ipa-server-install-options
+      - ${PWD}/config/ipa-rewrite.conf:/usr/share/ipa/ipa-rewrite.conf
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    # ports:
+    #   - 8888:80
+    #   - 389:389
+    #   - 636:636
+    #   - 88:88
+    #   - 88:88/udp
+    #   - 464:464
+    #   - 464:464/udp
+    networks:
+      freeipa:
+        ipv4_address: ${IPA_SUBNET:-10.0.42}.2
+
+networks:
+  freeipa:
+    enable_ipv6: true
+    driver_opts:
+      com.docker.network.enable_ipv6: "true"
+    ipam:
+      driver: default
+      config:
+       - subnet: ${IPA_SUBNET:-10.0.42}.0/16
+       - subnet: 2001:3200:3200::/64
+         gateway: 2001:3200:3200::1

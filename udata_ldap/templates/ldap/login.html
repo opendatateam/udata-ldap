@@ -1,0 +1,32 @@
+{% extends theme('layouts/1-column.html') %}
+{% import 'macros/forms.html' as forms with context %}
+
+{% set section_class = 'form' %}
+
+{% block main_content %}
+
+<div class="container auth-container">
+    <div class="row">
+        <div class="col-xs-12 col-lg-10 col-lg-offset-1 ">
+            <form class="form-horizontal validation validate"
+                method="post" action="{{ url_for('ldap.login') }}">
+                <fieldset>
+                    <legend>{{ _('Sign In') }}</legend>
+                    {{ forms.render(form) }}
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary btn-block">{{ _('Sign in') }}</button>
+                        </div>
+                    </div>
+                    <p>
+                        {{ _('Forgot your password?') }}
+                        <a href="{{ url_for('ldap.negociate', next=request.url) }}">
+                            {{ _('Automatic login') }}
+                        </a>
+                    </p>
+                </fieldset>
+            </form>
+    </div>
+</div>
+
+{% endblock %}
