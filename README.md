@@ -5,7 +5,9 @@ LDAP authentification for udata with optionnal Kerberos suppport.
 ## Requirements
 
 To use LDAP only authentication, you only need the `udata-ldap` extension.
-To use `SASL` and `SPNEGO`, you need a functionnal kerberos client environnement.
+
+To use [`SASL`](https://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer) and [`SPNEGO`](https://en.wikipedia.org/wiki/SPNEGO), you need a functional kerberos client environment.
+
 On debian, you can install the requirements using:
 
 ```bash
@@ -41,7 +43,7 @@ Some extra parameters are available:
 | Parameter | Default value | Notes |
 |-----------|---------------|-------|
 | `LDAP_KERBEROS_KEYTAB` | `None` | Path to an optionnal Kerberos keytab for this service |
-| `LDAP_KERBEROS_SERVICE_NAME` | 'HTTP' | The service principal as configured in the keytab |
+| `LDAP_KERBEROS_SERVICE_NAME` | `'HTTP'` | The service principal as configured in the keytab |
 | `LDAP_KERBEROS_SERVICE_HOSTNAME` | `socket.getfqdn()` | The service hostname (ie. `data.domain.com`) |
 | `LDAP_KERBEROS_SPNEGO` | `False` | Whether or not to enable passwordless authentication with SPNEGO |
 | `LDAP_USER_SPNEGO_ATTR` | `'uid'` | The ldap attribute extracted from SPNEGO handshake to match the user |
