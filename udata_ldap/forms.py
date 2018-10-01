@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from flask_security.forms import NextFormMixin, get_form_field_label, password_required
+from flask_security.forms import NextFormMixin, password_required
 from wtforms import PasswordField
 
 from udata.forms import Form, fields, validators

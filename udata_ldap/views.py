@@ -84,7 +84,7 @@ def negociate():
 
         ctx = gssapi.SecurityContext(creds=creds, usage='accept')
 
-        out_token = ctx.step(in_token)
+        ctx.step(in_token)
 
         if ctx.complete:
             username = str(ctx._inquire(initiator_name=True).initiator_name)
