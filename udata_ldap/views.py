@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import base64
 import gssapi
 
-from flask import current_app, request, Response, url_for, redirect
+from flask import current_app, flash, request, Response, url_for, redirect
 from flask.views import MethodView
 
 from flask_security.utils import login_user
@@ -43,13 +43,30 @@ def check_remote_user():
 
 
 def redirect_to_login():
-    return redirect(url_for('ldap.login'))
+    params = {}
+    if 'next' in request.args:
+        next_url = request.args['next']
+        if next_url.startswith('/') and not next_url.startswith('//'):
+            next_url = '{0}://{1}{2}'.format(request.scheme,
+                                             current_app.config['SERVER_NAME'],
+                                             next_url)
+        params['next'] = next_url
+    if 'message' in request.args:
+        params['message'] = request.args['message']
+    return redirect(url_for('ldap.login', **params))
 
 
 @bp.route('/login', endpoint='login')
 class LoginView(MethodView):
     def get(self):
-        return theme.render('ldap/login.html', form=LoginForm())
+        params = {}
+        if 'next' in request.args:
+            params['next'] = request.args['next']
+
+        if 'message' in request.args and not request.is_json:
+            flash(request.args['message'])
+
+        return theme.render('ldap/login.html', form=LoginForm(**params))
 
     def post(self):
         form = LoginForm(request.form)
