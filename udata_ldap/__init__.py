@@ -8,7 +8,7 @@ from __future__ import unicode_literals
 
 import logging
 
-__version__ = '0.1.0.dev'
+__version__ = '0.1.0'
 __description__ = 'LDAP authentification for udata with optionnal Kerberos suppport.'
 
 
