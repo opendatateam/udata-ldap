@@ -26,6 +26,12 @@ Then activate it in your `udata.cfg`:
 PLUGINS = ['ldap']
 ```
 
+**NB**: if using Kerberos SASL and/or SPNEGO, install it with:
+
+```bash
+pip install udata-ldap[kerberos]
+```
+
 ## Configuration
 
 `udata-ldap` makes use of [`flask-ldap3-login`](https://flask-ldap3-login.readthedocs.io/en/latest/index.html) and so use the same parameters as described [here](https://flask-ldap3-login.readthedocs.io/en/latest/configuration.html).

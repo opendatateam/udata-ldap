@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 import base64
-import gssapi
 
 from flask import current_app, flash, request, Response, url_for, redirect
 from flask.views import MethodView
@@ -91,6 +90,8 @@ class LoginView(MethodView):
 
 @bp.route('/negociate')
 def negociate():
+    import gssapi
+
     if request.headers.get('Authorization', '').startswith('Negotiate '):
         in_token = base64.b64decode(request.headers['Authorization'][10:])
 

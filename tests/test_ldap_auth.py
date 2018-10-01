@@ -1,10 +1,13 @@
 import pytest
 
+from flask import url_for
 
-from udata.auth import current_user
-from udata.core.user.factories import UserFactory
+# from udata.auth import current_user
+# from udata.core.user.factories import UserFactory
 from udata.core.user.models import User
-from udata.utils import faker
+# from udata.utils import faker
+
+from udata.tests.helpers import assert_redirects
 
 
 pytestmark = [
@@ -13,44 +16,75 @@ pytestmark = [
 ]
 
 
-def test_extract_remote_user_and_create_user(client):
-    email = faker.email()
-    with client:
-        client.get('/', headers={'REMOTE_USER': email})
-
-        assert User.objects.count() == 1
-
-        user = User.objects.first()
-
-        assert current_user.is_authenticated
-        assert current_user == user
-
-    assert user.email == email
+@pytest.fixture
+def ldap(app, mocker):
+    pass
 
 
-def test_extract_remote_user_and_find_user(client):
-    user = UserFactory()
+# def test_auth_with_email_and_password(client, ldap):
+#     first_name = 'John'
+#     last_name = 'Doe'
+#     email = 'coucou@cmoi.fr'
+#     password = 'not-so-secure'
+#     post_url = url_for('ldap.login')
 
-    with client:
-        client.get('/', headers={'REMOTE_USER': user.email})
+#     response = client.post(post_url, {
+#         'username': email,
+#         'password': password,
+#     })
 
-        assert User.objects.count() == 1
+#     assert_redirects(response, url_for('site.home'))
 
-        assert current_user.is_authenticated
-        assert current_user == user
+#     assert User.objects.count() == 1
+
+#     user = User.objects.first()
+#     assert user.email == email
+#     assert user.first_name == first_name
+#     assert user.last_name == last_name
+#     assert user.active
 
 
-def test_default_extract_names(client):
-    email = 'first_name.last_name@domain.com'
-    with client:
-        client.get('/', headers={'REMOTE_USER': email})
 
-        assert User.objects.count() == 1
+# def test_extract_remote_user_and_create_user(client):
+#     email = faker.email()
+#     with client:
+#         client.get('/', headers={'REMOTE_USER': email})
 
-        user = User.objects.first()
+#         assert User.objects.count() == 1
 
-        assert current_user.is_authenticated
-        assert current_user == user
+#         user = User.objects.first()
 
-    assert user.first_name == 'first_name'
-    assert user.last_name == 'last_name'
+#         assert current_user.is_authenticated
+#         assert current_user == user
+
+#     assert user.email == email
+
+
+# def test_extract_remote_user_and_find_user(client):
+#     user = UserFactory()
+
+#     with client:
+#         client.get('/', headers={'REMOTE_USER': user.email})
+
+#         assert User.objects.count() == 1
+
+#         assert current_user.is_authenticated
+#         assert current_user == user
+
+
+# def test_default_extract_names(client):
+#     email = 'first_name.last_name@domain.com'
+#     with client:
+#         client.get('/', headers={'REMOTE_USER': email})
+
+#         assert User.objects.count() == 1
+
+#         user = User.objects.first()
+
+#         assert current_user.is_authenticated
+#         assert current_user == user
+
+#     assert user.first_name == 'first_name'
+#     assert user.last_name == 'last_name'
+
+

@@ -38,6 +38,7 @@ long_description = '\n'.join((
 
 install_requires = pip('install.pip')
 tests_require = pip('test.pip')
+kerberos_require = pip('kerberos.pip')
 
 
 setup(
@@ -57,6 +58,7 @@ setup(
     tests_require=tests_require,
     extras_require={
         'test': tests_require,
+        'kerberos': kerberos_require,
     },
     entry_points={
         'udata.commands': [
