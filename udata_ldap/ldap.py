@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import logging
+
+from flask import current_app
 from flask_ldap3_login import LDAP3LoginManager
 
 from . import settings as DEFAULTS
@@ -9,6 +12,10 @@ from . import settings as DEFAULTS
 class LDAPManager(LDAP3LoginManager):
     def init_app(self, app):
         super(LDAPManager, self).init_app(app)
+        if self.config['LDAP_DEBUG']:
+            logging.getLogger('flask_ldap3_login').setLevel(logging.DEBUG)
+        self.krb_config = {}
+        self.init_kerberos(app)
 
     def init_config(self, config):
         # Set default before flask-ldap3 because only first dict.setdefault is remembered
@@ -17,6 +24,45 @@ class LDAPManager(LDAP3LoginManager):
                 self.config.setdefault(key, value)
 
         super(LDAPManager, self).init_config(config)
+
+    def init_kerberos(self, app):
+        if app.config.get('LDAP_KERBEROS_KEYTAB'):
+            import gssapi
+            config = app.extensions['ldap'] = {}
+            store = {'keytab': app.config['LDAP_KERBEROS_KEYTAB']}
+            service_name = app.config['LDAP_KERBEROS_SERVICE_NAME']
+            hostname = app.config['LDAP_KERBEROS_SERVICE_HOSTNAME']
+            principal = '{}@{}'.format(service_name, hostname)
+            name = gssapi.Name(principal, gssapi.NameType.hostbased_service)
+
+            config['name'] = name
+            config['credentials'] = gssapi.Credentials(name=name, usage='accept', store=store)
+
+    @property
+    def kerberos_name(self):
+        if not current_app.config.get('LDAP_KERBEROS_KEYTAB'):
+            raise RuntimeError('Kerberos not configured for this app')
+        try:
+            return current_app.extensions['ldap']['name']
+        except KeyError:
+            raise RuntimeError('Kerberos/GSSAPI not configured for this app')
+
+    @property
+    def kerberos_credentials(self):
+        if not current_app.config.get('LDAP_KERBEROS_KEYTAB'):
+            raise RuntimeError('Kerberos not configured for this app')
+        try:
+            return current_app.extensions['ldap']['credentials']
+        except KeyError:
+            raise RuntimeError('Kerberos/GSSAPI not configured for this app')
+
+    @property
+    def kerberos_security_context(self):
+        if not current_app.config.get('LDAP_KERBEROS_KEYTAB'):
+            raise RuntimeError('Kerberos not configured for this app')
+        import gssapi
+
+        return gssapi.SecurityContext(creds=self.kerberos_credentials, usage='accept')
 
     def get_trusted_user_infos(self, username, _connection=None):
         ldap_filter = '(&({0}={1}){2})'.format(

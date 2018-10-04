@@ -42,6 +42,7 @@ Some extra parameters are available:
 
 | Parameter | Default value | Notes |
 |-----------|---------------|-------|
+| `LDAP_DEBUG` | `False` | Enable verbose/debug logging |
 | `LDAP_KERBEROS_KEYTAB` | `None` | Path to an optionnal Kerberos keytab for this service |
 | `LDAP_KERBEROS_SERVICE_NAME` | `'HTTP'` | The service principal as configured in the keytab |
 | `LDAP_KERBEROS_SERVICE_HOSTNAME` | `socket.getfqdn()` | The service hostname (ie. `data.domain.com`) |

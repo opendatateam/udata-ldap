@@ -90,17 +90,10 @@ class LoginView(MethodView):
 
 @bp.route('/negociate')
 def negociate():
-    import gssapi
-
     if request.headers.get('Authorization', '').startswith('Negotiate '):
         in_token = base64.b64decode(request.headers['Authorization'][10:])
 
-        try:
-            creds = current_app.extensions['ldap']['creds']
-        except KeyError:
-            raise RuntimeError('gssapi not configured for this app')
-
-        ctx = gssapi.SecurityContext(creds=creds, usage='accept')
+        ctx = manager.kerberos_security_context
 
         ctx.step(in_token)
 

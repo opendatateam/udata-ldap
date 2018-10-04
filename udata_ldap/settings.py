@@ -5,6 +5,7 @@ Default settings for udata-ldap
 '''
 import socket
 
+LDAP_DEBUG = False
 LDAP_SERVER = None
 # LDAP_SERVER_PORT = 389
 LDAP_SSL = False
