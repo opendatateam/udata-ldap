@@ -6,11 +6,6 @@ Default settings for udata-ldap
 import socket
 
 LDAP_DEBUG = False
-LDAP_SERVER = None
-# LDAP_SERVER_PORT = 389
-LDAP_SSL = False
-LDAP_BASE_DN = None
-LDAP_USER_DN = None
 LDAP_KERBEROS = False
 LDAP_USER_LOGIN_ATTR = 'mail'
 LDAP_KERBEROS_KEYTAB = None

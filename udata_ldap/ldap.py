@@ -12,7 +12,7 @@ from . import settings as DEFAULTS
 class LDAPManager(LDAP3LoginManager):
     def init_app(self, app):
         super(LDAPManager, self).init_app(app)
-        if self.config['LDAP_DEBUG']:
+        if self.config['LDAP_DEBUG'] or self.config['TESTING']:
             logging.getLogger('flask_ldap3_login').setLevel(logging.DEBUG)
         self.krb_config = {}
         self.init_kerberos(app)

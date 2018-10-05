@@ -38,7 +38,6 @@ def check_remote_user():
                 **manager.extract_user_infos(data)
             )
         login_user(user)
-        return redirect(url_for('site.home'))
 
 
 def redirect_to_login():
