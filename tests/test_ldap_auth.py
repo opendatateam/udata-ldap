@@ -41,7 +41,6 @@ def ldap(app, mocker):
     manager._server_pool = ldap3.Server('mock')
 
     def mock_make_connection(bind_user=None, bind_password=None, contextualise=True, **kwargs):
-        print('make connection', bind_user, bind_password)
         connection = ldap3.Connection(manager._server_pool,
                                       user=bind_user, password=bind_password,
                                       client_strategy=ldap3.MOCK_SYNC,

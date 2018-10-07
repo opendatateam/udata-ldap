@@ -8,10 +8,6 @@ from urlparse import urlparse, parse_qs
 
 from udata.tests.helpers import assert_redirects
 
-pytestmark = [
-    pytest.mark.options(plugins=['ldap']),
-]
-
 
 def test_login_redirect_to_ldap_login(client):
     '''Login should redirect to the LDAP login page'''
