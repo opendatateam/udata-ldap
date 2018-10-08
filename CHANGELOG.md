@@ -7,6 +7,7 @@
 - Fix encoding errors in ldap commands
 - Update user on login
 - Start handling errors on negociate view
+- Display a page when trying automatic login wihtout credentials
 
 ## 0.2.1 (2018-10-08)
 

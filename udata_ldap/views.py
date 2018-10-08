@@ -133,7 +133,5 @@ def negociate():
             else:
                 return redirect(url_for('ldap.login', message=_('Invalid credentials')))
 
-    return Response(
-        status=401,
-        headers={'WWW-Authenticate': 'Negotiate'},
-    )
+    error = {'code': 401}
+    return theme.render('ldap/negociate.html', error=error), 401, {'WWW-Authenticate': 'Negotiate'}
