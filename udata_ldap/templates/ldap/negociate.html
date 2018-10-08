@@ -1,9 +1,11 @@
 {% extends theme("errors/base.html") %}
 
-{% set title = _('Automatic login error') %}
+{% set title = _('Passwordless login error') %}
 
 {% block details %}
-<p class='lead'>{{ _('If you see this page, you are trying to use the automatic login without credentials') }}</p>
+<p class='lead'>
+{{ _('If you see this page, you are trying to use the passwordless login without credentials in the browser') }}
+</p>
 {% if g.sentry_event_id %}
 <p>{{ _('The error identifier is {id}').format(id=g.sentry_event_id) }}</p>
 {% endif %}
