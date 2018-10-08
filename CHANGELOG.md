@@ -4,6 +4,7 @@
 
 - Display errors on login form
 - Force email into the login form
+- Fix encoding errors in ldap commands
 
 ## 0.2.1 (2018-10-08)
 
