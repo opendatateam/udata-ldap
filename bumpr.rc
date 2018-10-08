@@ -1,5 +1,5 @@
 [bumpr]
-file = udata_kerberos/__init__.py
+file = udata_ldap/__init__.py
 vcs = git
 commit = true
 tag = true
