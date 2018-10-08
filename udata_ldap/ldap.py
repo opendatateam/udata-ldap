@@ -12,10 +12,21 @@ from . import settings as DEFAULTS
 class LDAPManager(LDAP3LoginManager):
     def init_app(self, app):
         super(LDAPManager, self).init_app(app)
-        if self.config['LDAP_DEBUG'] or self.config['TESTING']:
-            logging.getLogger('flask_ldap3_login').setLevel(logging.DEBUG)
         self.krb_config = {}
+        self.init_logging(app)
         self.init_kerberos(app)
+
+    def init_logging(self, app):
+        verbose = self.config['LDAP_DEBUG'] or self.config['TESTING']
+        with app.app_context():
+            level = logging.DEBUG if verbose else current_app.logger.level
+            handlers = current_app.logger.handlers
+        for name in 'flask_ldap3_login', 'udata_ldap':
+            logger = logging.getLogger(name)
+            logger.setLevel(level)
+            if not logger.handlers:
+                for handler in handlers:
+                    logger.addHandler(handler)
 
     def init_config(self, config):
         # Set default before flask-ldap3 because only first dict.setdefault is remembered

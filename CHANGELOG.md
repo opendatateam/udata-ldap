@@ -1,10 +1,9 @@
 # Changelog
 
-
-
 ## Current (in progress)
 
 - Fix the "automatic login" link
+- More logging
 
 ## 0.2.0
 

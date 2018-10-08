@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 import base64
+import logging
 
 from flask import current_app, flash, request, Response, url_for, redirect
 from flask.views import MethodView
@@ -19,7 +20,9 @@ from .ldap import manager
 from flask_ldap3_login import AuthenticationResponseStatus
 
 bp = I18nBlueprint('ldap', __name__, url_prefix='/ldap',
-                   template_folder='templates',)
+                   template_folder='templates')
+
+log = logging.getLogger(__name__)
 
 
 @bp.before_app_request
@@ -32,7 +35,7 @@ def check_remote_user():
     data = manager.get_trusted_user_infos(remote_user)
     if data:
         user = datastore.find_user(email=data['mail'][0])
-        if not user:
+        if user is None:
             user = datastore.create_user(
                 active=True,
                 **manager.extract_user_infos(data)
@@ -75,8 +78,10 @@ class LoginView(MethodView):
             result = manager.authenticate(username, password)
 
             if result.status == AuthenticationResponseStatus.success:
+                if manager.config['LDAP_DEBUG']:
+                    log.info('Found remote user %s', result.user_id)
                 user = datastore.find_user(email=result.user_id)
-                if not user:
+                if user is None:
                     user = datastore.create_user(
                         active=True,
                         **manager.extract_user_infos(result.user_info)
@@ -100,17 +105,18 @@ def negociate():
             username = str(ctx._inquire(initiator_name=True).initiator_name)
             data = manager.get_trusted_user_infos(username)
             if data:
-                user = datastore.find_user(email=data['mail'][0])
-                if not user:
+                email = data['mail'][0]
+                if manager.config['LDAP_DEBUG']:
+                    log.info('Found remote user %s', email)
+                user = datastore.find_user(email=email)
+                if user is None:
                     user = datastore.create_user(
                         active=True,
                         **manager.extract_user_infos(data)
                     )
                 login_user(user)
-                return redirect(url_for('site.home'))
-
-            next_url = request.args['next'] if 'next' in request.args else url_for('site.home')
-            return redirect(next_url)
+                next_url = request.args['next'] if 'next' in request.args else url_for('site.home')
+                return redirect(next_url)
 
     return Response(
         status=401,
