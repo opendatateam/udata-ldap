@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import base64
 import logging
 
-from flask import current_app, flash, request, Response, url_for, redirect
+from flask import current_app, flash, request, url_for, redirect
 from flask.views import MethodView
 
 from flask_security.utils import login_user
