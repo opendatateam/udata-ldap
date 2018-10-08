@@ -78,7 +78,7 @@ class LoginView(MethodView):
             result = manager.authenticate(username, password)
 
             if result.status == AuthenticationResponseStatus.success:
-                if manager.config['LDAP_DEBUG']:
+                if manager.verbose:
                     log.info('Found remote user %s', result.user_id)
                 user = datastore.find_user(email=result.user_id)
                 if user is None:
@@ -107,7 +107,7 @@ def negociate():
             data = manager.get_trusted_user_infos(username)
             if data:
                 email = data['mail'][0]
-                if manager.config['LDAP_DEBUG']:
+                if manager.verbose:
                     log.info('Found remote user %s', email)
                 user = datastore.find_user(email=email)
                 if user is None:
