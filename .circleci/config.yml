@@ -10,7 +10,7 @@ jobs:
       - image: udata/elasticsearch:2.4.5
       - image: freeipa/freeipa-server
         name: ldap.test
-        command: no-exit --unattended --no-host-dns --realm=LDAP.TEST --domain=ldap.test --ds-password=password --admin-password=password
+        command: --unattended --no-host-dns --realm=LDAP.TEST --domain=ldap.test --ds-password=password --admin-password=password
         environment:
           PASSWORD: password
           IPA_SERVER_HOSTNAME: ldap.test
