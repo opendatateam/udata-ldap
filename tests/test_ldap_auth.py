@@ -3,10 +3,8 @@ import pytest
 
 from flask import url_for
 
-# from udata.auth import current_user
-# from udata.core.user.factories import UserFactory
+from udata.core.user.factories import UserFactory
 from udata.core.user.models import User
-# from udata.utils import faker
 
 from udata.tests.helpers import assert_redirects, assert200
 
@@ -92,6 +90,27 @@ def test_auth_with_email_and_password(client, ldap):
     assert user.active
 
 
+def test_auth_with_email_and_password_update_existing_user(client, ldap):
+    UserFactory(email=EMAIL)
+
+    post_url = url_for('ldap.login')
+
+    response = client.post(post_url, {
+        'username': EMAIL,
+        'password': PASSWORD,
+    })
+
+    assert_redirects(response, url_for('site.home'))
+
+    assert User.objects.count() == 1
+
+    user = User.objects.first()
+    assert user.email == EMAIL
+    assert user.first_name == FIRST_NAME
+    assert user.last_name == LAST_NAME
+    assert user.active
+
+
 def test_auth_with_email_and_password_and_next(client, ldap):
     post_url = url_for('ldap.login')
     next_url = url_for('site.dashboard')
@@ -106,7 +125,25 @@ def test_auth_with_email_and_password_and_next(client, ldap):
 
 
 @pytest.mark.options(LDAP_ALLOW_REMOTE_USER=True, LDAP_USER_SPNEGO_ATTR='uid')
-def test_auth_with_remoute_user(client, ldap):
+def test_auth_with_remote_user(client, ldap):
+    page_url = url_for('site.home')
+
+    response = client.get(page_url, headers={'REMOTE_USER': UID})
+
+    assert200(response)
+
+    assert User.objects.count() == 1
+
+    user = User.objects.first()
+    assert user.email == EMAIL
+    assert user.first_name == FIRST_NAME
+    assert user.last_name == LAST_NAME
+    assert user.active
+
+
+@pytest.mark.options(LDAP_ALLOW_REMOTE_USER=True, LDAP_USER_SPNEGO_ATTR='uid')
+def test_auth_with_existing_remote_user(client, ldap):
+    UserFactory(email=EMAIL)
     page_url = url_for('site.home')
 
     response = client.get(page_url, headers={'REMOTE_USER': UID})

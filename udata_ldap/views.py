@@ -40,6 +40,8 @@ def check_remote_user():
                 active=True,
                 **manager.extract_user_infos(data)
             )
+        else:
+            user.modify(**manager.extract_user_infos(data))
         login_user(user)
 
 
@@ -120,9 +122,16 @@ def negociate():
                         active=True,
                         **manager.extract_user_infos(data)
                     )
-                login_user(user)
-                next_url = request.args['next'] if 'next' in request.args else url_for('site.home')
-                return redirect(next_url)
+                else:
+                    user.modify(**manager.extract_user_infos(data))
+                if login_user(user):
+                    next_url = request.args.get('next', url_for('site.home'))
+                    return redirect(next_url)
+                else:
+                    flash(_('This user has been deactived'))
+                    return redirect(url_for('site.home'))
+            else:
+                return redirect(url_for('ldap.login', message=_('Invalid credentials')))
 
     return Response(
         status=401,
