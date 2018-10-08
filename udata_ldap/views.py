@@ -71,6 +71,7 @@ class LoginView(MethodView):
 
     def post(self):
         form = LoginForm(request.form)
+        error = None
         if form.validate():
             username = form.username.data
             password = form.password.data
@@ -86,11 +87,15 @@ class LoginView(MethodView):
                         active=True,
                         **manager.extract_user_infos(result.user_info)
                     )
-                login_user(user)
-                next_url = form.next.data or url_for('site.home')
-                return redirect(next_url)
-            return theme.render('ldap/login.html', form=form, error=_('Invalid credentials'))
-        return theme.render('ldap/login.html', form=form)
+                else:
+                    user.modify(**manager.extract_user_infos(result.user_info))
+                if login_user(user, remember=form.remember.data):
+                    next_url = form.next.data or url_for('site.home')
+                    return redirect(next_url)
+                else:
+                    error = _('This user has been deactived')
+            error = _('Invalid credentials')
+        return theme.render('ldap/login.html', form=form, error=error)
 
 
 @bp.route('/negociate')
