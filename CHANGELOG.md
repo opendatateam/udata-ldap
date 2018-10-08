@@ -3,6 +3,7 @@
 ## Current (in progress)
 
 - Display errors on login form
+- Force email into the login form
 
 ## 0.2.1 (2018-10-08)
 
