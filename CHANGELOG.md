@@ -2,7 +2,7 @@
 
 ## Current (in progress)
 
-- Nothing yet
+- Display errors on login form
 
 ## 0.2.1 (2018-10-08)
 

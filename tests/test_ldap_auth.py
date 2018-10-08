@@ -122,7 +122,7 @@ def test_auth_with_remoute_user(client, ldap):
     assert user.active
 
 
-def test_auth_with_invalid_password(client, ldap):
+def test_auth_with_invalid_password(client, ldap, templates):
     post_url = url_for('ldap.login')
 
     response = client.post(post_url, {
@@ -130,6 +130,12 @@ def test_auth_with_invalid_password(client, ldap):
         'password': 'wrong-password',
     })
 
-    assert200(response)  # Should display the formagain
+    assert200(response)  # Should display the form again
+
+    templates.assert_used('ldap/login.html')
+    error = templates.get_context_variable('error')
+
+    assert error
+    assert error in response.data.decode('utf8')
 
     assert User.objects.count() == 0

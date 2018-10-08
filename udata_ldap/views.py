@@ -10,7 +10,7 @@ from flask.views import MethodView
 from flask_security.utils import login_user
 
 from udata import theme
-from udata.i18n import I18nBlueprint
+from udata.i18n import I18nBlueprint, gettext as _
 
 from udata.core.user.models import datastore
 
@@ -89,6 +89,7 @@ class LoginView(MethodView):
                 login_user(user)
                 next_url = form.next.data or url_for('site.home')
                 return redirect(next_url)
+            return theme.render('ldap/login.html', form=form, error=_('Invalid credentials'))
         return theme.render('ldap/login.html', form=form)
 
 

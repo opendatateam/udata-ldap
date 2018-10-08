@@ -13,13 +13,15 @@
                 <fieldset>
                     <legend>{{ _('Sign In') }}</legend>
                     {{ forms.render(form) }}
+                    {% if error %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                    {% endif %}
                     <div class="form-group">
                         <div class="col-md-12">
                             <button type="submit" class="btn btn-primary btn-block">{{ _('Sign in') }}</button>
                         </div>
                     </div>
-                    <p>
-                        {{ _('Forgot your password?') }}
+                    <p class="text-center">
                         <a href="{{ url_for('ldap.negociate', **request.args) }}">
                             {{ _('Automatic login') }}
                         </a>
