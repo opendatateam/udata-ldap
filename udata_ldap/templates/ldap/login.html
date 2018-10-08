@@ -20,7 +20,7 @@
                     </div>
                     <p>
                         {{ _('Forgot your password?') }}
-                        <a href="{{ url_for('ldap.negociate', next=request.url) }}">
+                        <a href="{{ url_for('ldap.negociate', **request.args) }}">
                             {{ _('Automatic login') }}
                         </a>
                     </p>
