@@ -3,7 +3,7 @@ version: "2.4"
 services:
   freeipa:
     image: freeipa/freeipa-server
-    hostname: ${UDATA_LDAP_HOSTNAME:-localhost}
+    hostname: ${IPA_SERVER_HOSTNAME:-localhost}
     tmpfs:
       - /run
       - /tmp
