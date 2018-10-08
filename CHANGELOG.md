@@ -1,6 +1,6 @@
 # Changelog
 
-## Current (in progress)
+## 0.2.1 (2018-10-08)
 
 - Fix the "automatic login" link
 - More logging
