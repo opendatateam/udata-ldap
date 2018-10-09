@@ -1,6 +1,6 @@
 # Changelog
 
-## Current (in progress)
+## 0.3.0 (2018-10-09)
 
 - Display errors on login form
 - Force email into the login form
