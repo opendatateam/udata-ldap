@@ -1,5 +1,9 @@
 # Changelog
 
+## Current (in progress)
+
+- Nothing yet
+
 ## 0.3.0 (2018-10-09)
 
 - Display errors on login form
