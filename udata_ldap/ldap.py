@@ -71,10 +71,11 @@ class LDAPManager(LDAP3LoginManager):
 
         return gssapi.SecurityContext(creds=self.kerberos_credentials, usage='accept')
 
-    def get_trusted_user_infos(self, username, _connection=None):
+    def get_trusted_user_infos(self, identifier, attribute=None, _connection=None):
+        attribute = attribute or self.config.get('LDAP_USER_LOGIN_ATTR')
         ldap_filter = '(&({0}={1}){2})'.format(
-            self.config.get('LDAP_USER_SPNEGO_ATTR'),
-            username,
+            attribute,
+            identifier,
             self.config.get('LDAP_USER_OBJECT_FILTER')
         )
 

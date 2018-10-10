@@ -124,7 +124,7 @@ def test_auth_with_email_and_password_and_next(client, ldap):
     assert_redirects(response, next_url)
 
 
-@pytest.mark.options(LDAP_ALLOW_REMOTE_USER=True, LDAP_USER_SPNEGO_ATTR='uid')
+@pytest.mark.options(LDAP_ALLOW_REMOTE_USER=True, LDAP_REMOTE_USER_ATTR='uid')
 def test_auth_with_remote_user(client, ldap):
     page_url = url_for('site.home')
 
@@ -141,7 +141,7 @@ def test_auth_with_remote_user(client, ldap):
     assert user.active
 
 
-@pytest.mark.options(LDAP_ALLOW_REMOTE_USER=True, LDAP_USER_SPNEGO_ATTR='uid')
+@pytest.mark.options(LDAP_ALLOW_REMOTE_USER=True, LDAP_REMOTE_USER_ATTR='uid')
 def test_auth_with_existing_remote_user(client, ldap):
     UserFactory(email=EMAIL)
     page_url = url_for('site.home')

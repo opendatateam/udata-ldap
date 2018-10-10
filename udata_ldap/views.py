@@ -32,7 +32,7 @@ def check_remote_user():
     remote_user = request.headers.get('REMOTE_USER')
     if not remote_user:
         return
-    data = manager.get_trusted_user_infos(remote_user)
+    data = manager.get_trusted_user_infos(remote_user, manager.config.get('LDAP_REMOTE_USER_ATTR'))
     if data:
         user = datastore.find_user(email=data['mail'][0])
         if user is None:
@@ -111,7 +111,8 @@ def negociate():
 
         if ctx.complete:
             username = str(ctx._inquire(initiator_name=True).initiator_name)
-            data = manager.get_trusted_user_infos(username)
+            data = manager.get_trusted_user_infos(username,
+                                                  manager.config.get('LDAP_REMOTE_USER_ATTR'))
             if data:
                 email = data['mail'][0]
                 if manager.verbose:

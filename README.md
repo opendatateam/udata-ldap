@@ -47,7 +47,7 @@ Some extra parameters are available:
 | `LDAP_KERBEROS_SERVICE_NAME` | `'HTTP'` | The service principal as configured in the keytab |
 | `LDAP_KERBEROS_SERVICE_HOSTNAME` | `socket.getfqdn()` | The service hostname (ie. `data.domain.com`) |
 | `LDAP_KERBEROS_SPNEGO` | `False` | Whether or not to enable passwordless authentication with SPNEGO |
-| `LDAP_USER_SPNEGO_ATTR` | `'uid'` | The ldap attribute extracted from SPNEGO handshake to match the user |
+| `LDAP_REMOTE_USER_ATTR` | `'uid'` | The ldap attribute extracted from SPNEGO handshake to match the user |
 
 ## Testing configuration
 
