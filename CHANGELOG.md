@@ -1,6 +1,6 @@
 # Changelog
 
-## Current (in progress)
+## 0.3.1 (2018-10-11)
 
 - Renamed `LDAP_USER_SPNEGO_ATTR` into `LDAP_REMOTE_USER_ATTR` for consistency
 - Fix login form using SPNEGO attribute for login
