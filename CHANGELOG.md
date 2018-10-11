@@ -1,5 +1,9 @@
 # Changelog
 
+## Current (in progress)
+
+- Nothing yet
+
 ## 0.3.1 (2018-10-11)
 
 - Renamed `LDAP_USER_SPNEGO_ATTR` into `LDAP_REMOTE_USER_ATTR` for consistency
