@@ -11,6 +11,13 @@ from .utils import get_ldap_value
 
 
 class LDAPManager(LDAP3LoginManager):
+    # Map user attribute to config keys
+    USER_FIELDS = {
+        'first_name': 'LDAP_USER_FIRST_NAME_ATTR',
+        'last_name': 'LDAP_USER_LAST_NAME_ATTR',
+        'email': 'LDAP_USER_LOGIN_ATTR',
+    }
+
     def init_app(self, app):
         super(LDAPManager, self).init_app(app)
         self.verbose = self.config['DEBUG'] or self.config['LDAP_DEBUG'] or self.config['TESTING']
@@ -88,11 +95,10 @@ class LDAPManager(LDAP3LoginManager):
         )
 
     def extract_user_infos(self, data):
-        return {
-            'first_name': get_ldap_value(data, 'givenName'),
-            'last_name': get_ldap_value(data, 'sn'),
-            'email': get_ldap_value(data, 'mail'),
-        }
+        return dict(
+            (field, get_ldap_value(data, self.config[key]))
+            for field, key in self.USER_FIELDS.items()
+        )
 
 
 manager = LDAPManager()

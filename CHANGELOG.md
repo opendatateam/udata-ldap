@@ -4,6 +4,7 @@
 
 - Fix some console encoding error
 - Fix LDAP values extraction
+- Make all LDAP attributes mapping to user profile configurable
 
 ## 0.3.1 (2018-10-11)
 

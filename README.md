@@ -48,6 +48,8 @@ Some extra parameters are available:
 | `LDAP_KERBEROS_SERVICE_HOSTNAME` | `socket.getfqdn()` | The service hostname (ie. `data.domain.com`) |
 | `LDAP_KERBEROS_SPNEGO` | `False` | Whether or not to enable passwordless authentication with SPNEGO |
 | `LDAP_REMOTE_USER_ATTR` | `'uid'` | The ldap attribute extracted from SPNEGO handshake to match the user |
+| `LDAP_USER_FIRST_NAME_ATTR` | `'givenName'` | The ldap attribute to extract the first name from |
+| `LDAP_USER_LAST_NAME_ATTR` | `'sn'` | The ldap attribute to extract the last name from |
 
 ## Testing configuration
 
