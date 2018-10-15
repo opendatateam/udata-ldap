@@ -3,6 +3,7 @@
 ## Current (in progress)
 
 - Fix some console encoding error
+- Fix LDAP values extraction
 
 ## 0.3.1 (2018-10-11)
 

@@ -7,6 +7,7 @@ from flask import current_app
 from flask_ldap3_login import LDAP3LoginManager
 
 from . import settings as DEFAULTS
+from .utils import get_ldap_value
 
 
 class LDAPManager(LDAP3LoginManager):
@@ -88,9 +89,9 @@ class LDAPManager(LDAP3LoginManager):
 
     def extract_user_infos(self, data):
         return {
-            'first_name': data['givenName'][0],
-            'last_name': data['sn'][0],
-            'email': data['mail'][0],
+            'first_name': get_ldap_value(data, 'givenName'),
+            'last_name': get_ldap_value(data, 'sn'),
+            'email': get_ldap_value(data, 'mail'),
         }
 
 
