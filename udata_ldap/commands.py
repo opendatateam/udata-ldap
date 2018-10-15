@@ -57,13 +57,13 @@ def check():
         ))
         echo('User has the following remote attributes:')
         for key, value in result.user_info.items():
-            echo('{key}: {value}'.format(key=white(key),
+            echo('{key}: {value}'.format(key=white(safe_unicode(key)),
                                          value=safe_unicode(value)))
         echo('Local user will be createdwith the following values:')
         for key, value in manager.extract_user_infos(result.user_info).items():
-            echo('{key}: {value}'.format(key=white(key),
+            echo('{key}: {value}'.format(key=white(safe_unicode(key)),
                                          value=safe_unicode(value)))
     else:
-        exit_with_error('Unable to authenticate user "{0}"'.format(email))
+        exit_with_error('Unable to authenticate user "{0}"'.format(safe_unicode(email)))
 
     success('LDAP configuration is working')

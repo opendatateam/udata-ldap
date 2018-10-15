@@ -2,7 +2,7 @@
 
 ## Current (in progress)
 
-- Nothing yet
+- Fix some console encoding error
 
 ## 0.3.1 (2018-10-11)
 
