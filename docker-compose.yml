@@ -3,14 +3,16 @@ version: "2.4"
 services:
   freeipa:
     image: freeipa/freeipa-server
-    hostname: ${UDATA_LDAP_HOSTNAME:-localhost}
-    tmpfs:
-      - /run
-      - /tmp
-    volumes:
-      - ${PWD}/config/ipa-server-install-options:/data/ipa-server-install-options
-      - ${PWD}/config/ipa-rewrite.conf:/usr/share/ipa/ipa-rewrite.conf
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    hostname: ldap.test
+    # hostname: ${IPA_SERVER_HOSTNAME:-localhost}
+    command: no-exit --unattended --no-host-dns --realm=LDAP.TEST --domain=ldap.test --ds-password=password --admin-password=password
+    # tmpfs:
+    #   - /run
+    #   - /tmp
+    # volumes:
+    #   - ${PWD}/config/ipa-server-install-options:/data/ipa-server-install-options
+    #   - ${PWD}/config/ipa-rewrite.conf:/usr/share/ipa/ipa-rewrite.conf
+    #   - /sys/fs/cgroup:/sys/fs/cgroup:ro
     # ports:
     #   - 8888:80
     #   - 389:389

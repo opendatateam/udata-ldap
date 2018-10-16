@@ -1,5 +1,7 @@
 # udata-ldap
 
+[![Build status][circleci-badge]][circleci-url]
+
 LDAP authentification for udata with optionnal Kerberos suppport.
 
 ## Requirements
@@ -73,3 +75,7 @@ To use it, you need to copy the file `ipa-server-install-options.example` to `ip
 --ds-password=password
 --admin-password=password
 ```
+
+
+[circleci-url]: https://circleci.com/gh/opendatateam/workflows/udata-ldap
+[circleci-badge]: https://circleci.com/gh/opendatateam/udata-ldap.svg?style=shield
