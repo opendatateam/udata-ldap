@@ -1,5 +1,9 @@
 # Changelog
 
+## Current (in progress)
+
+- Nothing yet
+
 ## 0.3.2 (2018-10-16)
 
 - Fix some console encoding error

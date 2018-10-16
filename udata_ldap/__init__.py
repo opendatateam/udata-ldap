@@ -6,7 +6,7 @@ LDAP authentification for udata with optionnal Kerberos suppport.
 '''
 from __future__ import unicode_literals
 
-__version__ = '0.3.2'
+__version__ = '0.3.3.dev'
 __description__ = 'LDAP authentification for udata with optional Kerberos suppport.'
 
 
