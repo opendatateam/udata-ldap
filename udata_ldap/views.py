@@ -105,13 +105,16 @@ def negociate():
     if request.headers.get('Authorization', '').startswith('Negotiate '):
         in_token = base64.b64decode(request.headers['Authorization'][10:])
 
-        ctx = manager.kerberos_security_context
+        ctx = manager.kerberos.accept_security_context()
 
         ctx.step(in_token)
+        log.info('Initialized security context for %s on target %s using %s',
+                 ctx.initiator_name, ctx.target_name, ctx.mech)
 
         if ctx.complete:
-            username = str(ctx._inquire(initiator_name=True).initiator_name)
-            data = manager.get_trusted_user_infos(username,
+            username = ctx._inquire(initiator_name=True).initiator_name
+            log.info('Initialization complete, fetching user details for %s', username)
+            data = manager.get_trusted_user_infos(str(username),
                                                   manager.config.get('LDAP_REMOTE_USER_ATTR'))
             if data:
                 email = data['mail'][0]

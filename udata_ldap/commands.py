@@ -67,3 +67,13 @@ def check():
         exit_with_error('Unable to authenticate user "{0}"'.format(safe_unicode(email)))
 
     success('LDAP configuration is working')
+
+
+@ldap.command()
+def krbcheck():
+    '''Check the Kerberos configuration'''
+    if not manager.kerberos:
+        exit_with_error('No kerberos support, missing configuration')
+
+    if not manager.kerberos.check_keytab():
+        exit_with_error('Kerberos configuration not working')
