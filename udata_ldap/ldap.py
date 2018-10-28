@@ -11,6 +11,9 @@ from .utils import get_ldap_value
 
 
 class LDAPManager(LDAP3LoginManager):
+    '''
+    Manage all LDAP exchanges
+    '''
     # Map user attribute to config keys
     USER_FIELDS = {
         'first_name': 'LDAP_USER_FIRST_NAME_ATTR',
@@ -46,6 +49,13 @@ class LDAPManager(LDAP3LoginManager):
             self.kerberos = KerberosManager(app)
 
     def get_trusted_user_infos(self, identifier, attribute=None, _connection=None):
+        '''
+        Extract infos from a trusted user.
+
+        :param string identifier: The value on which the user is queried.
+        :param string attribute: The attribute against which the user is queried
+                                 (defaults to `LDAP_USER_LOGIN_ATTR`)
+        '''
         attribute = attribute or self.config.get('LDAP_USER_LOGIN_ATTR')
         ldap_filter = '(&({0}={1}){2})'.format(
             attribute,

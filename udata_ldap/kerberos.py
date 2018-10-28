@@ -1,14 +1,21 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import base64
 import gssapi
-import os
 import logging
+import os
+
+from flask import request
 
 log = logging.getLogger(__name__)
 
 
 class KerberosManager(object):
+    '''
+    Manage Kerberos names, credentials, security context
+    and common tasks
+    '''
     def __init__(self, app):
         self.verbose = app.config['DEBUG'] or app.config['LDAP_DEBUG'] or app.config['TESTING']
         # os.environ['KRB5_KTNAME'] = app.config['LDAP_KERBEROS_KEYTAB']
@@ -22,10 +29,6 @@ class KerberosManager(object):
         self.canonical_name = self.name.canonicalize(gssapi.MechType.kerberos)
         app.extensions['kerberos'] = self
 
-    @property
-    def security_context(self):
-        return gssapi.SecurityContext(creds=self.credentials, usage='accept')
-
     def accept_security_context(self):
         credentials = gssapi.Credentials(name=self.name, usage='accept', store=self.store)
         return gssapi.SecurityContext(creds=credentials, usage='accept')
@@ -36,6 +39,9 @@ class KerberosManager(object):
         return gssapi.SecurityContext(name=self.name, usage='initiate', creds=credentials)
 
     def check_keytab(self):
+        '''
+        Check keytab validity.
+        '''
         if not os.path.exists(self.keytab):
             log.error('Keytab %s not found', self.keytab)
             return False

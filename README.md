@@ -14,6 +14,30 @@ On debian, you can install the requirements using:
 apt-get install krb5-config krb5-user libkrb5-dev
 ```
 
+You need to configure your domain in `/etc/krb5.conf`.
+Here's a sample configuration for `DOMAIN.ORG`:
+
+```ini
+[libdefaults]
+    default_realm = DOMAIN.ORG
+
+[realms]
+    DATA.XPS = {
+        #admin_server = ipa.data.xps
+        # use "kdc = ..." if realm admins haven't put SRV records into DNS
+        kdc = kdc.domain.org
+        admin_server = kdc.domain.org:749
+        default_domain = domain.org
+        dns_lookup_realm = false
+        dns_lookup_kdc = false
+        rdns = false
+    }
+
+[domain_realm]
+    domain.org = DOMAIN.ORG
+    .domain.org = DOMAIN.ORG
+```
+
 ## Usage
 
 Install the plugin package in you udata environement:
@@ -56,7 +80,8 @@ Some extra parameters are available:
 `udata-ldap` provides two commands to help with the configuration:
 
 - `udata ldap config` will display the LDAP configuration seen by `udata`
-- `udata ldap check` will allow to quickly test your configuration.
+- `udata ldap check` will allow to quickly test your LDAP configuration.
+- `udata ldap krbcheck` will allow to quickly test your Kerberos configuration.
 
 ## Testing localy with docker
 
@@ -68,8 +93,8 @@ To use it, you need to copy the file `ipa-server-install-options.example` to `ip
 
 ```
 --unattended
---realm=DATA.XPS
---domain=data.xps
+--realm=DOMAIN.ORG
+--domain=DOMAIN.ORG
 --ds-password=password
 --admin-password=password
 ```
