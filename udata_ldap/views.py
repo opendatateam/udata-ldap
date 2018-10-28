@@ -102,40 +102,31 @@ class LoginView(MethodView):
 
 @bp.route('/negociate')
 def negociate():
-    if request.headers.get('Authorization', '').startswith('Negotiate '):
-        in_token = base64.b64decode(request.headers['Authorization'][10:])
-
-        ctx = manager.kerberos.accept_security_context()
-
-        ctx.step(in_token)
-        log.info('Initialized security context for %s on target %s using %s',
-                 ctx.initiator_name, ctx.target_name, ctx.mech)
-
-        if ctx.complete:
-            username = ctx._inquire(initiator_name=True).initiator_name
-            log.info('Initialization complete, fetching user details for %s', username)
-            data = manager.get_trusted_user_infos(str(username),
-                                                  manager.config.get('LDAP_REMOTE_USER_ATTR'))
-            if data:
-                email = data['mail'][0]
-                if manager.verbose:
-                    log.info('Found remote user %s', email)
-                user = datastore.find_user(email=email)
-                if user is None:
-                    user = datastore.create_user(
-                        active=True,
-                        **manager.extract_user_infos(data)
-                    )
-                else:
-                    user.modify(**manager.extract_user_infos(data))
-                if login_user(user):
-                    next_url = request.args.get('next', url_for('site.home'))
-                    return redirect(next_url)
-                else:
-                    flash(_('This user has been deactived'))
-                    return redirect(url_for('site.home'))
+    username = manager.kerberos.negociate()
+    if username:
+        log.info('Initialization complete, fetching user details for %s', username)
+        data = manager.get_trusted_user_infos(str(username),
+                                              manager.config.get('LDAP_REMOTE_USER_ATTR'))
+        if data:
+            email = data['mail'][0]
+            if manager.verbose:
+                log.info('Found remote user %s', email)
+            user = datastore.find_user(email=email)
+            if user is None:
+                user = datastore.create_user(
+                    active=True,
+                    **manager.extract_user_infos(data)
+                )
             else:
-                return redirect(url_for('ldap.login', message=_('Invalid credentials')))
+                user.modify(**manager.extract_user_infos(data))
+            if login_user(user):
+                next_url = request.args.get('next', url_for('site.home'))
+                return redirect(next_url)
+            else:
+                flash(_('This user has been deactived'))
+                return redirect(url_for('site.home'))
+        else:
+            return redirect(url_for('ldap.login', message=_('Invalid credentials')))
 
     error = {'code': 401}
     return theme.render('ldap/negociate.html', error=error), 401, {'WWW-Authenticate': 'Negotiate'}

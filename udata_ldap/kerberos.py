@@ -52,3 +52,20 @@ class KerberosManager(object):
         while not ctx.complete:
             output_token = ctx.step(input_token)
 
+    def negociate(self):
+        '''
+        Perform a SPNEGO negociation.
+
+        :return: the initiator name on success, None otherwise
+        '''
+        if request.headers.get('Authorization', '').startswith('Negotiate '):
+            in_token = base64.b64decode(request.headers['Authorization'][10:])
+
+            ctx = self.accept_security_context()
+
+            ctx.step(in_token)
+            log.info('Initialized security context for %s on target %s using %s',
+                     ctx.initiator_name, ctx.target_name, ctx.mech)
+
+            if ctx.complete:
+                return ctx._inquire(initiator_name=True).initiator_name
