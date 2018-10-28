@@ -2,7 +2,7 @@
 
 ## Current (in progress)
 
-- Nothing yet
+- Internal: extracted all Kerberos handling into its own module
 
 ## 0.3.2 (2018-10-16)
 
