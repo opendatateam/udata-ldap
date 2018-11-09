@@ -105,7 +105,7 @@ def negociate():
     username = manager.kerberos.negociate()
     if username:
         log.info('Initialization complete, fetching user details for %s', username)
-        data = manager.get_trusted_user_infos(str(username),
+        data = manager.get_trusted_user_infos(manager.kerberos.strip_realm(username),
                                               manager.config.get('LDAP_REMOTE_USER_ATTR'))
         if data:
             email = data['mail'][0]

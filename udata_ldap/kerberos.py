@@ -5,10 +5,13 @@ import base64
 import gssapi
 import logging
 import os
+import re
 
 from flask import request
 
 log = logging.getLogger(__name__)
+
+RE_REALM = re.compile(r'@[A-Z]+(?:\.[A-Z]+)*$')
 
 
 class KerberosManager(object):
@@ -27,6 +30,7 @@ class KerberosManager(object):
         self.principal = '{}@{}'.format(self.service_name, self.hostname)
         self.name = gssapi.Name(self.principal, gssapi.NameType.hostbased_service)
         self.canonical_name = self.name.canonicalize(gssapi.MechType.kerberos)
+        self.no_realm = app.config.get('LDAP_KERBEROS_SPNEGO_NO_REALM', True)
         app.extensions['kerberos'] = self
 
     def accept_security_context(self):
@@ -69,3 +73,9 @@ class KerberosManager(object):
 
             if ctx.complete:
                 return ctx._inquire(initiator_name=True).initiator_name
+
+    def strip_realm(self, value):
+        '''
+        Sanitize an identifier (tipicaly sAMAccountName) by removing its realm.
+        '''
+        return RE_REALM.sub('', str(value)) if self.no_realm else str(value)

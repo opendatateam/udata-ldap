@@ -3,6 +3,7 @@
 ## Current (in progress)
 
 - Internal: extracted all Kerberos handling into its own module
+- Kerberos: handle REALM removal from SPNEGO/REMOTE_USER identifier
 
 ## 0.3.2 (2018-10-16)
 
