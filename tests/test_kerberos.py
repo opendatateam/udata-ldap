@@ -3,18 +3,12 @@ from __future__ import unicode_literals
 
 import pytest
 
-from udata_ldap.ldap import manager
-
-
-pytestmark = [
-    pytest.mark.options(plugins=['ldap'],
-                        LDAP_KERBEROS_KEYTAB=True),
-]
+from udata_ldap.kerberos import KerberosManager
 
 
 @pytest.fixture
 def krb(app):
-    return manager.kerberos
+    return KerberosManager(app)
 
 
 @pytest.mark.parametrize('value,expected', (
