@@ -6,6 +6,12 @@ import pytest
 from udata_ldap.ldap import manager
 
 
+pytestmark = [
+    pytest.mark.options(plugins=['ldap'],
+                        LDAP_KERBEROS_KEYTAB=True),
+]
+
+
 @pytest.fixture
 def krb(app):
     return manager.kerberos
