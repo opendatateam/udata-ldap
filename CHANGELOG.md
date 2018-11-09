@@ -1,5 +1,9 @@
 # Changelog
 
+## Current (in progress)
+
+- Nothing yet
+
 ## 0.3.3 (2018-11-09)
 
 - Internal: extracted all Kerberos handling into its own module
