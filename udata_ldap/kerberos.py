@@ -54,7 +54,7 @@ class KerberosManager(object):
         ctx = self.initiate_security_context()
         input_token = None
         while not ctx.complete:
-            output_token = ctx.step(input_token)
+            output_token = ctx.step(input_token)  # noqa
 
     def negociate(self):
         '''

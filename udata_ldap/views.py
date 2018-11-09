@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import base64
 import logging
 
 from flask import current_app, flash, request, url_for, redirect
