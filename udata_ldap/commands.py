@@ -27,7 +27,7 @@ def config():
     header('Current configuration')
     for key in sorted(manager.config):
         if key.startswith('LDAP_'):
-            echo('{key}: {value}'.format(key=white(key),
+            echo(b'{key}: {value}'.format(key=white(key),
                                          value=safe_unicode(manager.config[key])))
 
 
@@ -57,12 +57,12 @@ def check():
         ))
         echo('User has the following remote attributes:')
         for key, value in result.user_info.items():
-            echo('{key}: {value}'.format(key=white(safe_unicode(key)),
-                                         value=safe_unicode(value)))
+            echo(b'{key}: {value}'.format(key=white(safe_unicode(key)),
+                                          value=safe_unicode(value)))
         echo('Local user will be created with the following values:')
         for key, value in manager.extract_user_infos(result.user_info).items():
-            echo('{key}: {value}'.format(key=white(safe_unicode(key)),
-                                         value=safe_unicode(value)))
+            echo(b'{key}: {value}'.format(key=white(safe_unicode(key)),
+                                          value=safe_unicode(value)))
     else:
         exit_with_error('Unable to authenticate user "{0}"'.format(safe_unicode(email)))
 

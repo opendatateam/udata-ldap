@@ -3,6 +3,7 @@
 ## Current (in progress)
 
 - Fix negociate and REMOTE_USER email extraction
+- Fix some command line encoding errors
 
 ## 0.3.3 (2018-11-09)
 
