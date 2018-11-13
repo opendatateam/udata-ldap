@@ -59,7 +59,7 @@ def check():
         for key, value in result.user_info.items():
             echo('{key}: {value}'.format(key=white(safe_unicode(key)),
                                          value=safe_unicode(value)))
-        echo('Local user will be createdwith the following values:')
+        echo('Local user will be created with the following values:')
         for key, value in manager.extract_user_infos(result.user_info).items():
             echo('{key}: {value}'.format(key=white(safe_unicode(key)),
                                          value=safe_unicode(value)))

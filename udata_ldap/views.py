@@ -15,6 +15,7 @@ from udata.core.user.models import datastore
 
 from .forms import LoginForm
 from .ldap import manager
+from .utils import get_ldap_value
 
 from flask_ldap3_login import AuthenticationResponseStatus
 
@@ -33,7 +34,8 @@ def check_remote_user():
         return
     data = manager.get_trusted_user_infos(remote_user, manager.config.get('LDAP_REMOTE_USER_ATTR'))
     if data:
-        user = datastore.find_user(email=data['mail'][0])
+        email = get_ldap_value(data, 'mail')
+        user = datastore.find_user(email=email)
         if user is None:
             user = datastore.create_user(
                 active=True,
@@ -107,7 +109,7 @@ def negociate():
         data = manager.get_trusted_user_infos(manager.kerberos.strip_realm(username),
                                               manager.config.get('LDAP_REMOTE_USER_ATTR'))
         if data:
-            email = data['mail'][0]
+            email = get_ldap_value(data, 'mail')
             if manager.verbose:
                 log.info('Found remote user %s', email)
             user = datastore.find_user(email=email)

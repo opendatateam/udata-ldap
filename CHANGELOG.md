@@ -2,7 +2,7 @@
 
 ## Current (in progress)
 
-- Nothing yet
+- Fix negociate and REMOTE_USER email extraction
 
 ## 0.3.3 (2018-11-09)
 
