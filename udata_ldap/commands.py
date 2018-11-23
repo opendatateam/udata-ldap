@@ -28,7 +28,7 @@ def config():
     for key in sorted(manager.config):
         if key.startswith('LDAP_'):
             echo(b'{key}: {value}'.format(key=white(key),
-                                         value=safe_unicode(manager.config[key])))
+                                          value=safe_unicode(manager.config[key])))
 
 
 @ldap.command()
