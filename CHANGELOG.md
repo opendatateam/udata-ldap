@@ -1,5 +1,9 @@
 # Changelog
 
+## Current (in progress)
+
+- Nothing yet
+
 ## 0.3.4 (2018-11-23)
 
 - Fix negociate and REMOTE_USER email extraction
