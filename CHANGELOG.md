@@ -1,5 +1,9 @@
 # Changelog
 
+## Current (in progress)
+
+- Nothing yet
+
 ## 0.3.5 (2018-11-23)
 
 - Fix packaging
